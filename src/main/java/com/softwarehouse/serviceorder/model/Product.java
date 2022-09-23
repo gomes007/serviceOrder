@@ -6,26 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "provider")
-public class Provider {
+@Table(name = "product")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "providerType", nullable = false)
-    private Type type;
-
-
-
-    @Embedded
-    private GeneralInformation generalInformation;
+    private String productName;
+    private String barCode;
+    private String weight;
+    private String height;
+    private String length;
+    private String details;
+    private String commission;
 
 
 
