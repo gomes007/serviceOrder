@@ -19,7 +19,9 @@ public class Provider {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String providerType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "providerType", nullable = false)
+    private Type type;
 
 
 

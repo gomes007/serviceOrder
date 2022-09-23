@@ -19,7 +19,9 @@ public class Client {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String clientType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "clientType", nullable = false)
+    private Type type;
 
     private LocalDate birthDate;
 

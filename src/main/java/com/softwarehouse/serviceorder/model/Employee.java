@@ -27,6 +27,6 @@ public class Employee extends Salary{
 
     private Double commission;
 
-
+    private Salary salary;
 
 }
