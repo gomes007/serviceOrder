@@ -1,6 +1,7 @@
 package com.softwarehouse.serviceorder.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,25 @@ public class Address {
     private String complement;
     private String city;
     private String state;
+
+
+    @OneToOne
+    @JoinTable
+            (name = "address_addressType",
+                    joinColumns = @JoinColumn(name = "address_id"),
+                    inverseJoinColumns = @JoinColumn(name = "address_type_id"))
+    private AddressType addressType;
+
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Employee employee;
+
+
+    @JsonIgnore
+    @OneToOne(optional = false)
+    @JoinColumn(name = "service_order_id")
+    private ServiceOrder service_order;
 
 }

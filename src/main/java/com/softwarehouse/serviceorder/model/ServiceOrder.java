@@ -5,14 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "serviceOrder")
-public class ServiceOrder extends Service{
+@Table(name = "service_order")
+public class ServiceOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -22,7 +24,11 @@ public class ServiceOrder extends Service{
     private String channelSale;
     private String attendant;
     private String expert;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "serviceStatus", nullable = false)
+    private ServiceOrderStatus status;
+
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -37,10 +43,30 @@ public class ServiceOrder extends Service{
     private String technicalReport;
     private String warrantyTerms;
 
-    private Double discount;
-    private Double total;
+    private BigDecimal discountAmount;
+    private BigDecimal discountPercent;
+    private BigDecimal total;
 
-    private Service service;
+
+    @OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL)
+    private List<ServiceOrderService> serviceOrderServices;
+
+
+    @OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL)
+    private List<ServiceOrderEquipment> serviceOrderEquipments;
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "service_order_cost_center",
+            joinColumns = @JoinColumn(name = "service_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "cost_center_id")
+    )
+    private CostCenter costCenter;
+
+
+    @OneToOne(mappedBy = "service_order", cascade = CascadeType.ALL)
+    private Address deliveryAddress;
 
 
 }

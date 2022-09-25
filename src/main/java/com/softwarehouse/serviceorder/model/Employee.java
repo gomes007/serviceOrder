@@ -5,28 +5,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "employee")
-public class Employee extends Salary{
+public class Employee extends Person{
+
+
     @Id
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
     private Long id;
-
-
-    @Embedded
-    private GeneralInformation generalInformation;
-
-    private String profilePhoto;
 
     private String cv;
 
-    private Double commission;
+    @OneToOne
+    @JoinColumn(name = "position_and_salary_id")
+    private PositionAndSalary positionAndSalary;
 
-    private Salary salary;
+    @JoinColumn(name = "position_and_salary_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Address> addresses;
 
 }

@@ -1,6 +1,5 @@
 package com.softwarehouse.serviceorder.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,21 +7,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "provider")
-public class Provider {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "cost_center")
+public class CostCenter{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "providerType", nullable = false)
-    private Type type;
+    private String name;
 
-    @Embedded
-    private GeneralInformation generalInformation;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "costCenterStatus", nullable = false)
+    private CostCenterStatus status;
+
+
+    @OneToOne(mappedBy = "costCenter")
+    private ServiceOrder serviceOrder;
 
 }
