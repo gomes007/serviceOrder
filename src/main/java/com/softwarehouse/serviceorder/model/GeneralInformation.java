@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Embeddable
@@ -32,6 +31,6 @@ public class GeneralInformation {
     private Situation situation;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private Type type;
+    @Column(name = "company_type", nullable = false)
+    private CompanyType companyType;
 }

@@ -27,7 +27,7 @@ public class Client {
     @Embedded
     private GeneralInformation generalInformation;
 
-    @JoinColumn(name = "client-id")
+    @JoinColumn(name = "client_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 }

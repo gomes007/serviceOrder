@@ -36,7 +36,7 @@ public class ServiceOrder {
     private String brand;
     private String model;
     private String seriesNumber;
-    private String condition;
+    private String paymentCondition;
     private String flaw;
     private String fittings;
     private String solution;
@@ -46,7 +46,6 @@ public class ServiceOrder {
     private BigDecimal discountAmount;
     private BigDecimal discountPercent;
     private BigDecimal total;
-
 
     @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
@@ -65,7 +64,7 @@ public class ServiceOrder {
     )
     private CostCenter costCenter;
 
-    @JoinColumn(name = "service_order_id")
+    @JoinColumn(name = "address_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Address deliveryAddress;
 }

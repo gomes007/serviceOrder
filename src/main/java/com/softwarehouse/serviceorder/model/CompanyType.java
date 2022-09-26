@@ -1,6 +1,6 @@
 package com.softwarehouse.serviceorder.model;
 
-public enum Type {
+public enum CompanyType {
 
     Person,
     Company;
