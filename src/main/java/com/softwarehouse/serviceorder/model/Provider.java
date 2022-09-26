@@ -14,17 +14,15 @@ import java.util.List;
 @Entity
 @Table(name = "provider")
 public class Provider {
-
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     @Embedded
     private GeneralInformation generalInformation;
 
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
+    @JoinColumn(name = "provider_id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
-
 }

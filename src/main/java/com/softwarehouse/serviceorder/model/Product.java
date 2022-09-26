@@ -37,10 +37,7 @@ public class Product {
     @JoinColumn(name = "product_id")
     private Inventory inventory;
 
-
     @OneToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
-
-
 }

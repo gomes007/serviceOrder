@@ -20,5 +20,4 @@ public class PositionAndSalary {
     private String position;
     private Double salary;
     private Double commission;
-
 }

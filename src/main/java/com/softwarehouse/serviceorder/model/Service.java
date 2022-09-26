@@ -24,5 +24,4 @@ public class Service {
     private BigDecimal unitCost;
     private BigDecimal commission;
     private String description;
-
 }

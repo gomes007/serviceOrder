@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cost_center")
-public class CostCenter{
+public class CostCenter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -22,9 +22,4 @@ public class CostCenter{
     @Enumerated(EnumType.STRING)
     @Column(name = "costCenterStatus", nullable = false)
     private CostCenterStatus status;
-
-
-    @OneToOne(mappedBy = "costCenter")
-    private ServiceOrder serviceOrder;
-
 }

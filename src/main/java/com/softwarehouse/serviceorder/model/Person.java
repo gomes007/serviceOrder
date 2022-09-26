@@ -3,11 +3,9 @@ package com.softwarehouse.serviceorder.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Person {
-
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +20,7 @@ public abstract class Person {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-
     private LocalDate birthDate;
     private String otherInformations;
     private String profilePhoto;
-
-
 }

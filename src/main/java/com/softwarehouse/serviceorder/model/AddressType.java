@@ -20,5 +20,4 @@ public class AddressType {
     private Long id;
 
     private String label;
-
 }

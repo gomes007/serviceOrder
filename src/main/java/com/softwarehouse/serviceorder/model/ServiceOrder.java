@@ -48,13 +48,14 @@ public class ServiceOrder {
     private BigDecimal total;
 
 
-    @OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ServiceOrderService> serviceOrderServices;
 
 
-    @OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ServiceOrderEquipment> serviceOrderEquipments;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(
@@ -64,9 +65,7 @@ public class ServiceOrder {
     )
     private CostCenter costCenter;
 
-
-    @OneToOne(mappedBy = "service_order", cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Address deliveryAddress;
-
-
 }

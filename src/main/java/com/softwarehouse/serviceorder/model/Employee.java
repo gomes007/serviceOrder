@@ -2,6 +2,7 @@ package com.softwarehouse.serviceorder.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "employee")
-public class Employee extends Person{
-
+@EqualsAndHashCode(callSuper = true)
+public class Employee extends Person {
     private String cv;
 
     @OneToOne

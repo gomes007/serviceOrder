@@ -1,6 +1,5 @@
 package com.softwarehouse.serviceorder.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Table(name = "service_order_equipment")
 public class ServiceOrderEquipment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -33,10 +31,4 @@ public class ServiceOrderEquipment {
     private BigDecimal discountPercent;
     private BigDecimal discountAmount;
     private BigDecimal totalValue;
-
-    @JsonIgnore
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "service_order_id")
-    private ServiceOrder service_order;
-
 }

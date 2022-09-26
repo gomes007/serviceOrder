@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "client")
 public class Client {
-
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,9 +27,7 @@ public class Client {
     @Embedded
     private GeneralInformation generalInformation;
 
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @JoinColumn(name = "client-id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
-
-
 }
