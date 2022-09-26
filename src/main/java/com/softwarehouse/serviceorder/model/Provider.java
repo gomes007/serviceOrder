@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,16 +14,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "provider")
 public class Provider {
+
     @Id
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "providerType", nullable = false)
-    private Type type;
 
     @Embedded
     private GeneralInformation generalInformation;
+
+    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL)
+    private List<Address> addresses;
 
 }

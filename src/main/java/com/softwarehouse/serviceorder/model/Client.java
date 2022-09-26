@@ -14,15 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "client")
-public class Client{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+public class Client {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "clientType", nullable = false)
-    private Type type;
+    @Id
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private BigDecimal creditLimit;
 
@@ -32,8 +29,7 @@ public class Client{
     private GeneralInformation generalInformation;
 
 
-
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Address> addresses;
 
 

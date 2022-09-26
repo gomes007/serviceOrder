@@ -14,12 +14,6 @@ import java.util.List;
 @Table(name = "employee")
 public class Employee extends Person{
 
-
-    @Id
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private String cv;
 
     @OneToOne

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Data
 @Embeddable
@@ -19,12 +18,7 @@ public class GeneralInformation {
     private String cpf;
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
-    private Gender gender;
-
-    private LocalDate birthDate;
-
+    private String otherInformations;
 
     private String fantasyName;
     private String cnpj;
@@ -34,16 +28,15 @@ public class GeneralInformation {
     private String contactName;
     private String contactPhone;
 
-    @ManyToOne
-    @JoinColumn(name = "contact_type_id")
-    private ContactType contactType;
-
-    private String otherInformations;
 
 
     @Enumerated(EnumType.STRING)
     @Column(name = "situation", nullable = false)
     private Situation situation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private Type type;
 
 
 }

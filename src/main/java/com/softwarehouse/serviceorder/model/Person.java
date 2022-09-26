@@ -22,6 +22,7 @@ public abstract class Person {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
+
     private LocalDate birthDate;
     private String otherInformations;
     private String profilePhoto;

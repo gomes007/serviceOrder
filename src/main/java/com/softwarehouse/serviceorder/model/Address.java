@@ -38,8 +38,19 @@ public class Address {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private Provider provider;
 
 
     @JsonIgnore
