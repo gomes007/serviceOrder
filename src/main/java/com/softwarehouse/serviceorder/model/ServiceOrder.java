@@ -51,7 +51,6 @@ public class ServiceOrder {
     @OneToMany(cascade = CascadeType.ALL)
     private List<ServiceOrderService> serviceOrderServices;
 
-
     @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<ServiceOrderEquipment> serviceOrderEquipments;
