@@ -70,7 +70,6 @@ public class ServiceOrder {
     @Column(name = "other_information")
     private String otherInformation;
 
-
     @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Attachment> attachments;
