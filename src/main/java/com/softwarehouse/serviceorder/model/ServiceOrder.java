@@ -56,14 +56,22 @@ public class ServiceOrder {
     private List<ServiceOrderEquipment> serviceOrderEquipments;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "service_order_cost_center",
-            joinColumns = @JoinColumn(name = "service_order_id"),
-            inverseJoinColumns = @JoinColumn(name = "cost_center_id")
-    )
+    @JoinTable(name = "service_order_cost_center", joinColumns = @JoinColumn(name = "service_order_id"), inverseJoinColumns = @JoinColumn(name = "cost_center_id"))
     private CostCenter costCenter;
 
     @JoinColumn(name = "address_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Address deliveryAddress;
+
+    @JoinColumn(name = "service_order_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Payment> payments;
+
+    @Column(name = "other_information")
+    private String otherInformation;
+
+
+    @JoinColumn(name = "service_order_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Attachment> attachments;
 }
