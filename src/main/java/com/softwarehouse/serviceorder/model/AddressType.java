@@ -17,6 +17,7 @@ import java.util.Set;
 public class AddressType {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String label;

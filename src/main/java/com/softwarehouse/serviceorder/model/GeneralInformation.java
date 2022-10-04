@@ -12,14 +12,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class GeneralInformation {
     private String name;
+
+    @Column(nullable = false, unique = true, length = 170)
     private String email;
+
+    @Column(unique = true, length = 11)
     private String cpf;
+
     private String phone;
 
     private String otherInformations;
 
     private String fantasyName;
+
+    @Column(unique = true, length = 14)
     private String cnpj;
+
     private String razaoSocial;
     private String inscricaoEstadual;
 

@@ -18,7 +18,8 @@ public class Payment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "payment_method", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
     @Column(nullable = false)

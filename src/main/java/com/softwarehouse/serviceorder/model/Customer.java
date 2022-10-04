@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "client")
-public class Client {
+@Table(name = "customer")
+public class Customer {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class Client {
     @Embedded
     private GeneralInformation generalInformation;
 
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "customer_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 }
