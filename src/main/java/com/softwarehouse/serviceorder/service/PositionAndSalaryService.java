@@ -1,9 +1,7 @@
 package com.softwarehouse.serviceorder.service;
 
-import com.softwarehouse.serviceorder.domain.AddressType;
 import com.softwarehouse.serviceorder.domain.PositionAndSalary;
 import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
-import com.softwarehouse.serviceorder.repository.AddressTypeRepository;
 import com.softwarehouse.serviceorder.repository.PositionAndSalaryRepository;
 import org.springframework.stereotype.Service;
 

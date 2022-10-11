@@ -1,8 +1,6 @@
 package com.softwarehouse.serviceorder.controller;
 
-import com.softwarehouse.serviceorder.domain.AddressType;
 import com.softwarehouse.serviceorder.domain.PositionAndSalary;
-import com.softwarehouse.serviceorder.service.AddressTypeService;
 import com.softwarehouse.serviceorder.service.PositionAndSalaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
