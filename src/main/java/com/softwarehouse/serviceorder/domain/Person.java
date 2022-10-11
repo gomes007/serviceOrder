@@ -1,8 +1,11 @@
 package com.softwarehouse.serviceorder.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Person {
@@ -12,7 +15,11 @@ public abstract class Person {
     private Long id;
 
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
     private String cpf;
     private String phone;
 

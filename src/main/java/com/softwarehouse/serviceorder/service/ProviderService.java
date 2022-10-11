@@ -1,10 +1,8 @@
 package com.softwarehouse.serviceorder.service;
 
-import com.softwarehouse.serviceorder.domain.Customer;
 import com.softwarehouse.serviceorder.domain.Provider;
 import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
 import com.softwarehouse.serviceorder.model.Response;
-import com.softwarehouse.serviceorder.repository.CustomerRepository;
 import com.softwarehouse.serviceorder.repository.ProviderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

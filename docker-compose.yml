@@ -11,9 +11,3 @@ services:
       MYSQL_PASSWORD: admin
     ports:
       - 3306:3306
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 9090:8080

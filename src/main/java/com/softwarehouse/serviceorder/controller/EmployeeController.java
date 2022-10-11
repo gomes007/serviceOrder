@@ -1,30 +1,30 @@
 package com.softwarehouse.serviceorder.controller;
 
-import com.softwarehouse.serviceorder.domain.Provider;
+import com.softwarehouse.serviceorder.domain.Employee;
 import com.softwarehouse.serviceorder.model.Response;
-import com.softwarehouse.serviceorder.service.ProviderService;
+import com.softwarehouse.serviceorder.service.EmployeeService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/providers")
-public class ProviderController {
-    private final ProviderService service;
+@RequestMapping("/employees")
+public class EmployeeController {
+    private final EmployeeService service;
 
-    public ProviderController(final ProviderService service) {
+    public EmployeeController(final EmployeeService service) {
         this.service = service;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Provider register(@RequestBody final Provider provider) {
-        return this.service.save(provider);
+    public Employee register(@RequestBody final Employee employee) {
+        return this.service.save(employee);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Response<Provider> find(
+    public Response<Employee> find(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ) {
@@ -36,23 +36,23 @@ public class ProviderController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Provider findById(@PathVariable("id") long id) {
+    public Employee findById(@PathVariable("id") long id) {
         return this.service.findById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Provider update(@PathVariable("id") long id, @RequestBody final Provider provider) {
-        this.service.providerExists(id);
+    public Employee update(@PathVariable("id") long id, @RequestBody final Employee employee) {
+        this.service.employeeExists(id);
 
-        provider.setId(id);
+        employee.setId(id);
 
-        return this.service.save(provider);
+        return this.service.save(employee);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Provider delete(@PathVariable("id") long id) {
+    public Employee delete(@PathVariable("id") long id) {
         return this.service.deleteById(id);
     }
 }
