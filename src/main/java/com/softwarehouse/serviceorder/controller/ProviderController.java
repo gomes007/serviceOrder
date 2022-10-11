@@ -1,30 +1,32 @@
 package com.softwarehouse.serviceorder.controller;
 
 import com.softwarehouse.serviceorder.domain.Customer;
+import com.softwarehouse.serviceorder.domain.Provider;
 import com.softwarehouse.serviceorder.model.Response;
 import com.softwarehouse.serviceorder.service.CustomerService;
+import com.softwarehouse.serviceorder.service.ProviderService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customers")
-public class CustomerController {
-    private final CustomerService service;
+@RequestMapping("/providers")
+public class ProviderController {
+    private final ProviderService service;
 
-    public CustomerController(final CustomerService service) {
+    public ProviderController(final ProviderService service) {
         this.service = service;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer register(@RequestBody final Customer customer) {
+    public Provider register(@RequestBody final Provider customer) {
         return this.service.save(customer);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Response<Customer> find(
+    public Response<Provider> find(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ) {
@@ -36,23 +38,23 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer findById(@PathVariable("id") long id) {
+    public Provider findById(@PathVariable("id") long id) {
         return this.service.findById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer update(@PathVariable("id") long id, @RequestBody final Customer customer) {
-        this.service.customerExists(id);
+    public Provider update(@PathVariable("id") long id, @RequestBody final Provider provider) {
+        this.service.providerExists(id);
 
-        customer.setId(id);
+        provider.setId(id);
 
-        return this.service.save(customer);
+        return this.service.save(provider);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer delete(@PathVariable("id") long id) {
+    public Provider delete(@PathVariable("id") long id) {
         return this.service.deleteById(id);
     }
 }
