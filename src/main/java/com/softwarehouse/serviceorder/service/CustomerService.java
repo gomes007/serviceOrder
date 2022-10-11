@@ -1,6 +1,7 @@
 package com.softwarehouse.serviceorder.service;
 
 import com.softwarehouse.serviceorder.domain.Customer;
+import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
 import com.softwarehouse.serviceorder.model.Response;
 import com.softwarehouse.serviceorder.repository.CustomerRepository;
 import org.springframework.data.domain.Page;
@@ -28,5 +29,23 @@ public class CustomerService {
                 .itemsPerPage(Long.parseLong("" + pageRequest.getPageSize()))
                 .totalRecordsQuantity(customers.getTotalElements())
                 .build();
+    }
+
+    public Customer findById(final Long id) {
+        return this.repository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("customer not found"));
+    }
+
+    public void customerExists(final Long id) {
+        this.findById(id);
+    }
+
+    public Customer deleteById(final Long id) {
+        final Customer found = this.findById(id);
+
+        this.repository.delete(found);
+
+        return found;
     }
 }

@@ -33,4 +33,26 @@ public class CustomerController {
 
         return this.service.find(PageRequest.of(page, size));
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer findById(@PathVariable("id") long id) {
+        return this.service.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer update(@PathVariable("id") long id, @RequestBody final Customer customer) {
+        this.service.customerExists(id);
+
+        customer.setId(id);
+
+        return this.service.save(customer);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer delete(@PathVariable("id") long id) {
+        return this.service.deleteById(id);
+    }
 }

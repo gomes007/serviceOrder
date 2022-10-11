@@ -1,6 +1,7 @@
 package com.softwarehouse.serviceorder.service;
 
 import com.softwarehouse.serviceorder.domain.AddressType;
+import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
 import com.softwarehouse.serviceorder.repository.AddressTypeRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class AddressTypeService {
     public AddressType findById(final Long id) {
         return this.repository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("address not found"));
+                .orElseThrow(() -> new NotFoundException("address not found"));
     }
 
     public List<AddressType> findAll() {
