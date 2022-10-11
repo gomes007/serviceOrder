@@ -20,7 +20,6 @@ public class WebExceptionsHandler {
 
         if (ex.getMessage().contains("Duplicate entry")) {
             status = HttpStatus.CONFLICT;
-
         }
 
         return ResponseEntity.status(status).body(response);

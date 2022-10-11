@@ -1,13 +1,10 @@
-package com.softwarehouse.serviceorder.model;
+package com.softwarehouse.serviceorder.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Data
 @Entity

@@ -1,4 +1,4 @@
-package com.softwarehouse.serviceorder.model;
+package com.softwarehouse.serviceorder.domain;
 
 
 import lombok.AllArgsConstructor;

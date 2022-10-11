@@ -1,4 +1,4 @@
-package com.softwarehouse.serviceorder.model;
+package com.softwarehouse.serviceorder.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "attachments")
-public class Attachment {
+@NoArgsConstructor
+@Entity
+@Table(name = "positionAndSalary")
+public class PositionAndSalary {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String location;
+    private String position;
+    private Double salary;
+    private Double commission;
 }

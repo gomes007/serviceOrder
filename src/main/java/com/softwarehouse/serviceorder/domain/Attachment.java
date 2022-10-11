@@ -1,4 +1,4 @@
-package com.softwarehouse.serviceorder.model;
+package com.softwarehouse.serviceorder.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,16 +10,13 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cost_center")
-public class CostCenter {
+@Table(name = "attachments")
+public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "costCenterStatus", nullable = false)
-    private CostCenterStatus status;
+    @Column(nullable = false)
+    private String location;
 }

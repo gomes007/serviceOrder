@@ -1,6 +1,6 @@
 package com.softwarehouse.serviceorder.service;
 
-import com.softwarehouse.serviceorder.model.AddressType;
+import com.softwarehouse.serviceorder.domain.AddressType;
 import com.softwarehouse.serviceorder.repository.AddressTypeRepository;
 import org.springframework.stereotype.Service;
 

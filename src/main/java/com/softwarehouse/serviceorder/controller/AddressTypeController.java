@@ -1,6 +1,6 @@
 package com.softwarehouse.serviceorder.controller;
 
-import com.softwarehouse.serviceorder.model.AddressType;
+import com.softwarehouse.serviceorder.domain.AddressType;
 import com.softwarehouse.serviceorder.service.AddressTypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class AddressTypeController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public AddressType update(
             @PathVariable("id") final Long id,
             @RequestBody final AddressType addressType
@@ -38,11 +38,13 @@ public class AddressTypeController {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public AddressType findById(@PathVariable("id") final Long id) {
         return this.service.findById(id);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public AddressType deleteById(@PathVariable("id") final Long id) {
         return this.service.deleteById(id);
     }
