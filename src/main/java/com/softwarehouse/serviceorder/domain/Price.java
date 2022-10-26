@@ -15,5 +15,9 @@ public class Price {
     private BigDecimal finalCost;
     private BigDecimal profitPercent;
     private BigDecimal salePrice;
+    private BigDecimal suggestedProfitPercent;
+    private BigDecimal usedProfitPercent;
+    private BigDecimal suggestedSaleValue;
+    private BigDecimal usedSaleValue;
 }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -39,4 +40,8 @@ public class Product {
     @OneToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
+
+    @JoinColumn(name = "product_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Attachment> photos;
 }

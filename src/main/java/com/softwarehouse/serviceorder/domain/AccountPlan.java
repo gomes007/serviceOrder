@@ -8,18 +8,21 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "attachments")
-public class Attachment {
+@NoArgsConstructor
+@Table(name = "account_plan")
+public class AccountPlan {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private String location;
+    @Column(nullable = false, unique = true)
+    private String label;
 
     @Column(nullable = false)
-    private String name;
+    private boolean isReceivingAccount;
+
+    @Column(nullable = false)
+    private boolean isPayingAccount;
 }

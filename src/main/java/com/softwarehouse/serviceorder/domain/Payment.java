@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -18,12 +19,17 @@ public class Payment {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
+    private LocalDate date;
+
     @OneToOne
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
     @Column(nullable = false)
     private BigDecimal value;
+
+    private BigDecimal discount;
 
     @Column(name = "other_information")
     private String otherInformation;
