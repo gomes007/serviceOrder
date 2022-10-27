@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@MappedSuperclass
 public class Billing {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,10 +21,6 @@ public class Billing {
 
     @Column(nullable = false)
     private String description;
-
-    @OneToMany
-    @JoinColumn(name = "billing_id", nullable = false)
-    private List<AccountPlan> accountPlans;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -62,12 +59,4 @@ public class Billing {
     private LocalDate date;
 
     private String observations;
-
-    @OneToMany
-    @JoinColumn(name = "billing_id", nullable = false)
-    private List<Payment> payments;
-
-    @OneToMany
-    @JoinColumn(name = "billing_id")
-    private List<Attachment> attachments;
 }

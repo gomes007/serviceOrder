@@ -7,8 +7,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,10 +18,8 @@ class FileUploadServiceIT {
     @Autowired
     private FileUploadService service;
 
-    private static String readFileContent(final OutputStream outputStream) {
-        var baos = (ByteArrayOutputStream) outputStream;
-        var inputStream = new ByteArrayInputStream(baos.toByteArray());
-        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+    private static String readFileContent(final InputStream inputStream) {
+        return new String(((ByteArrayInputStream) inputStream).readAllBytes(), StandardCharsets.UTF_8);
     }
 
     @Test

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,7 +27,21 @@ public class FileUploadService {
     }
 
     public String uploadFile(final MultipartFile multipartFile) {
-        final String fileName = System.currentTimeMillis() + ".file";
+        final String fileType = Optional.ofNullable(multipartFile.getContentType())
+                .map(contentType -> contentType.split("/"))
+                .map(splittedContentType -> {
+                    var type = splittedContentType[0];
+                    var content = splittedContentType[1];
+
+                    if (type.equals("image") || type.equals("application")) {
+                        return "." + content;
+                    }
+                    return ".file";
+                })
+                .orElse(".file");
+
+        final String fileName = System.currentTimeMillis() + fileType;
+
         try {
             log.info("trying to upload file {} to bucket {}", fileName, this.bucketName);
             amazonS3.putObject(
@@ -40,17 +56,18 @@ public class FileUploadService {
             log.error("failed to upload file {} to bucket {}", fileName, this.bucketName, ex);
             throw new InternalServerException(ex.getMessage());
         }
+
     }
 
-    public OutputStream downloadFile(final String fileName) {
+    public InputStream downloadFile(final String fileName) {
         try {
             log.info("trying to download file {} from bucket {}", fileName, this.bucketName);
-            var content = amazonS3.getObjectAsString(
+            var content = amazonS3.getObject(
                     this.bucketName,
                     fileName
             );
 
-            return writeFile(content);
+            return new ByteArrayInputStream(content.getObjectContent().readAllBytes());
         } catch (Exception ex) {
             log.error("failed to download file {} from bucket {}", fileName, this.bucketName, ex);
             throw new InternalServerException(ex.getMessage());
@@ -63,16 +80,6 @@ public class FileUploadService {
             amazonS3.deleteObject(this.bucketName, fileName);
         } catch (Exception ex) {
             log.error("failed to delete file {} from bucket {}", fileName, this.bucketName, ex);
-            throw new InternalServerException(ex.getMessage());
-        }
-    }
-
-    private static OutputStream writeFile(final String content) {
-        var data = new ByteArrayOutputStream();
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(data))) {
-            writer.write(content);
-            return data;
-        } catch (Exception ex) {
             throw new InternalServerException(ex.getMessage());
         }
     }
