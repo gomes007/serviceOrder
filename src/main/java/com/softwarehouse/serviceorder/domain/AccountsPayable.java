@@ -7,17 +7,17 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "paying_bills")
-public class PayingBill extends Billing {
+@Table(name = "accounts_payable")
+public class AccountsPayable extends Billing {
     @OneToMany
-    @JoinColumn(name = "paying_bill_id", nullable = false)
+    @JoinColumn(name = "accounts_payable_id", nullable = false)
     private List<AccountPlan> accountPlans;
 
     @OneToMany
-    @JoinColumn(name = "paying_bill_id", nullable = false)
+    @JoinColumn(name = "accounts_payable_id", nullable = false)
     private List<Payment> payments;
 
     @OneToMany
-    @JoinColumn(name = "paying_bill_id")
+    @JoinColumn(name = "accounts_payable_id")
     private List<Attachment> attachments;
 }
