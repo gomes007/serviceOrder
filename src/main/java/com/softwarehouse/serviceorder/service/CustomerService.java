@@ -20,8 +20,14 @@ public class CustomerService {
         return this.repository.save(customer);
     }
 
-    public Response<Customer> find(final PageRequest pageRequest) {
-        Page<Customer> customers = this.repository.findAll(PageRequest.of(pageRequest.getPageNumber() - 1, pageRequest.getPageSize()));
+    public Response<Customer> find(final PageRequest pageRequest, final String filter) {
+        Page<Customer> customers = this.repository.findAllByGeneralInformationNameIgnoreCaseContainingOrGeneralInformationEmailIgnoreCaseContainingOrGeneralInformationCpfContainingOrGeneralInformationCnpjContaining(
+                filter,
+                filter,
+                filter,
+                filter,
+                PageRequest.of(pageRequest.getPageNumber() - 1, pageRequest.getPageSize())
+        );
         return Response
                 .<Customer>builder()
                 .items(customers.getContent())

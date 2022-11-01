@@ -26,12 +26,13 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public Response<Customer> find(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "filter", defaultValue = "") String filter
     ) {
         if (page < 1) page = 1;
         if (size < 1) size = 10;
 
-        return this.service.find(PageRequest.of(page, size));
+        return this.service.find(PageRequest.of(page, size), filter);
     }
 
     @GetMapping("/{id}")
