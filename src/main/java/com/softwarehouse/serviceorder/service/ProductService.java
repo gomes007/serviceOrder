@@ -1,5 +1,6 @@
 package com.softwarehouse.serviceorder.service;
 
+import com.softwarehouse.serviceorder.domain.Inventory;
 import com.softwarehouse.serviceorder.domain.Product;
 import com.softwarehouse.serviceorder.exceptions.impl.BadRequestException;
 import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
@@ -16,9 +17,14 @@ import java.util.Optional;
 @Service
 public class ProductService {
     private final ProductRepository repository;
+    private final AttachmentService attachmentService;
 
-    public ProductService(final ProductRepository repository) {
+    public ProductService(
+            final ProductRepository repository,
+            final AttachmentService attachmentService
+    ) {
         this.repository = repository;
+        this.attachmentService = attachmentService;
     }
 
     public Product register(final Product product) {
@@ -26,8 +32,11 @@ public class ProductService {
     }
 
     public Product update(final Product product, final Long id) {
-        if (product.getInventory() == null || product.getInventory().getId() == null)
-            throw new BadRequestException("product has invalid inventory id");
+        Optional
+                .ofNullable(product.getInventory())
+                .map(Inventory::getId)
+                .orElseThrow(() -> new BadRequestException("product has invalid inventory id"));
+
         var savedProduct = this.findById(id);
 
         product.setId(id);
@@ -65,6 +74,7 @@ public class ProductService {
 
     public Product deleteById(final Long id) {
         final Product found = this.findById(id);
+        found.getPhotos().forEach((photo) -> this.attachmentService.deleteById(photo.getId()));
 
         this.repository.delete(found);
 

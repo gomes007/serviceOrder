@@ -33,7 +33,7 @@ public class Product {
     @Embedded
     private Price price;
 
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "inventory_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Inventory inventory;
 
