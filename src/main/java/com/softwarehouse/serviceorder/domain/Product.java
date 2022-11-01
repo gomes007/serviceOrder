@@ -33,15 +33,15 @@ public class Product {
     @Embedded
     private Price price;
 
-    @OneToOne
     @JoinColumn(name = "product_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Inventory inventory;
 
     @OneToOne
     @JoinColumn(name = "provider_id")
     private Provider provider;
 
+    @OneToMany
     @JoinColumn(name = "product_id")
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Attachment> photos;
 }
