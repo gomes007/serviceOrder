@@ -26,12 +26,15 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public Response<Employee> find(
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "filter", defaultValue = "") String filter,
+            @RequestParam(name = "position", defaultValue = "") String position,
+            @RequestParam(name = "role", defaultValue = "") String role
     ) {
         if (page < 1) page = 1;
         if (size < 1) size = 10;
 
-        return this.service.find(PageRequest.of(page, size));
+        return this.service.find(filter, position, role, PageRequest.of(page, size));
     }
 
     @GetMapping("/{id}")

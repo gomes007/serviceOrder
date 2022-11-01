@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "positionAndSalary")
-public class PositionAndSalary {
+public class PositionSalary {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -20,4 +20,5 @@ public class PositionAndSalary {
     private String position;
     private Double salary;
     private Double commission;
+    private String role;
 }

@@ -22,8 +22,14 @@ public class ServiceOrder {
 
     private String clientName;
     private String channelSale;
-    private String attendant;
-    private String expert;
+
+    @OneToOne
+    @JoinColumn(name = "attendant_id")
+    private Employee attendant;
+
+    @OneToOne
+    @JoinColumn(name = "expert_id")
+    private Employee expert;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "serviceStatus", nullable = false)

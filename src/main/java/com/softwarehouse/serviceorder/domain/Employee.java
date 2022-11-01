@@ -18,8 +18,8 @@ public class Employee extends Person {
     private String cv;
 
     @OneToOne
-    @JoinColumn(name = "position_and_salary_id")
-    private PositionAndSalary positionAndSalary;
+    @JoinColumn(name = "position_salary_id")
+    private PositionSalary positionSalary;
 
     @JoinColumn(name = "employee_id")
     @OneToMany(cascade = CascadeType.ALL)

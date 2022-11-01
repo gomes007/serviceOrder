@@ -20,8 +20,17 @@ public class EmployeeService {
         return this.repository.save(employee);
     }
 
-    public Response<Employee> find(final PageRequest pageRequest) {
-        Page<Employee> employees = this.repository.findAll(PageRequest.of(pageRequest.getPageNumber() - 1, pageRequest.getPageSize()));
+    public Response<Employee> find(final String filter, final String position, final String role, final PageRequest pageRequest) {
+//        Page<Employee> employees = this.repository.findAllByNameIgnoreCaseContainingAndPositionSalaryPositionIgnoreCaseContainingAndPositionSalaryRoleIgnoreCaseContaining(
+//                filter,
+//                position,
+//                role,
+//                PageRequest.of(pageRequest.getPageNumber() - 1, pageRequest.getPageSize())
+//        );
+        Page<Employee> employees = this.repository.findAllByNameIgnoreCaseContaining(
+                filter,
+                PageRequest.of(pageRequest.getPageNumber() - 1, pageRequest.getPageSize())
+        );
         return Response
                 .<Employee>builder()
                 .items(employees.getContent())
