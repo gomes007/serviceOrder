@@ -4,8 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @Entity
@@ -18,17 +22,17 @@ public class ServiceOrderEquipment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinTable(
-            name = "service_order_equipments",
-            joinColumns = @JoinColumn(name = "service_order_equipment_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Product product;
+    private String name;
+    private String brand;
+    private String model;
 
-    private String details;
-    private int quantity;
-    private BigDecimal discountPercent;
-    private BigDecimal discountAmount;
-    private BigDecimal totalValue;
+    @Column(nullable = false, unique = true)
+    private String seriesNumber;
+
+    private String conditions;
+    private String flaws;
+    private String fittings;
+    private String solution;
+    private String technicalReport;
+    private String warrantyTerms;
 }

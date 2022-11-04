@@ -21,6 +21,7 @@ public class EmployeeService {
     }
 
     public Response<Employee> find(final String filter, final String position, final String role, final PageRequest pageRequest) {
+//        TODO rever regra de filtro por position e role
 //        Page<Employee> employees = this.repository.findAllByNameIgnoreCaseContainingAndPositionSalaryPositionIgnoreCaseContainingAndPositionSalaryRoleIgnoreCaseContaining(
 //                filter,
 //                position,

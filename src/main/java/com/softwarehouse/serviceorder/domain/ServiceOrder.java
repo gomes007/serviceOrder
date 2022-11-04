@@ -38,28 +38,21 @@ public class ServiceOrder {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private String equipmentName;
-    private String brand;
-    private String model;
-    private String seriesNumber;
-    private String paymentCondition;
-    private String flaw;
-    private String fittings;
-    private String solution;
-    private String technicalReport;
-    private String warrantyTerms;
-
     private BigDecimal discountAmount;
     private BigDecimal discountPercent;
     private BigDecimal total;
 
     @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
-    private List<ServiceOrderService> serviceOrderServices;
+    private List<ServiceOrderEquipment> serviceOrderEquipments;
 
     @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
-    private List<ServiceOrderEquipment> serviceOrderEquipments;
+    private List<ServiceOrderProduct> serviceOrderProducts;
+
+    @JoinColumn(name = "service_order_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ServiceOrderService> serviceOrderServices;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "service_order_cost_center", joinColumns = @JoinColumn(name = "service_order_id"), inverseJoinColumns = @JoinColumn(name = "cost_center_id"))

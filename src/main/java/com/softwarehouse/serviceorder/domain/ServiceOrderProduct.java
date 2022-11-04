@@ -11,16 +11,16 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "service_order_service")
-public class ServiceOrderService {
+@Table(name = "service_order_product")
+public class ServiceOrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "service_id")
-    private Service service;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private String details;
     private int quantity;
@@ -28,4 +28,3 @@ public class ServiceOrderService {
     private BigDecimal discountAmount;
     private BigDecimal totalValue;
 }
-
