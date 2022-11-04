@@ -4,7 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +32,10 @@ public class ServiceOrder {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String clientName;
+    @OneToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
     private String channelSale;
 
     @OneToOne
@@ -42,34 +57,34 @@ public class ServiceOrder {
     private BigDecimal discountPercent;
     private BigDecimal total;
 
-    @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
     private List<ServiceOrderEquipment> serviceOrderEquipments;
 
-    @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
     private List<ServiceOrderProduct> serviceOrderProducts;
 
-    @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
     private List<ServiceOrderService> serviceOrderServices;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "service_order_cost_center", joinColumns = @JoinColumn(name = "service_order_id"), inverseJoinColumns = @JoinColumn(name = "cost_center_id"))
+    @OneToOne
+    @JoinColumn(name = "cost_center_id")
     private CostCenter costCenter;
 
     @JoinColumn(name = "address_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Address deliveryAddress;
 
-    @JoinColumn(name = "service_order_id")
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_order_id")
     private List<Payment> payments;
 
     @Column(name = "other_information")
     private String otherInformation;
 
+    @OneToMany
     @JoinColumn(name = "service_order_id")
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 }
