@@ -31,6 +31,7 @@ public class WebExceptionsHandler {
         final Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
         response.put("status", ex.getStatus().value());
+        response.put("errorRef", ex.getErrorRef());
 
         return ResponseEntity.status(ex.getStatus()).body(response);
     }
