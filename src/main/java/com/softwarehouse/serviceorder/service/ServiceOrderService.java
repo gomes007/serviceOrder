@@ -1,10 +1,7 @@
 package com.softwarehouse.serviceorder.service;
 
-import com.softwarehouse.serviceorder.domain.Price;
-import com.softwarehouse.serviceorder.domain.Product;
-import com.softwarehouse.serviceorder.domain.ServiceOrder;
-import com.softwarehouse.serviceorder.domain.ServiceOrderProduct;
-import com.softwarehouse.serviceorder.domain.ServiceOrderStatus;
+import com.softwarehouse.serviceorder.domain.*;
+import com.softwarehouse.serviceorder.exceptions.impl.BadRequestException;
 import com.softwarehouse.serviceorder.exceptions.impl.InventoryValidationException;
 import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
 import com.softwarehouse.serviceorder.model.InventoryValidation;
@@ -17,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -24,23 +23,39 @@ import java.util.Optional;
 public class ServiceOrderService {
     private final ServiceOrderRepository repository;
     private final AttachmentService attachmentService;
+    private final InventoryService inventoryService;
+    private final ProductService productService;
+    private final ServiceService serviceService;
 
     public ServiceOrderService(
             final ServiceOrderRepository repository,
-            final AttachmentService attachmentService
+            final AttachmentService attachmentService,
+            final InventoryService inventoryService,
+            final ProductService productService,
+            final ServiceService serviceService
     ) {
         this.repository = repository;
         this.attachmentService = attachmentService;
+        this.inventoryService = inventoryService;
+        this.productService = productService;
+        this.serviceService = serviceService;
     }
 
     public ServiceOrder open(final ServiceOrder serviceOrder) {
+        this.fetchProducts(serviceOrder);
+        this.fetchServices(serviceOrder);
         this.validateInventory(serviceOrder);
         this.calculateTotals(serviceOrder);
 
         serviceOrder.setStatus(ServiceOrderStatus.OPEN);
 
-        return serviceOrder;
-//        return this.repository.save(serviceOrder);
+        // TODO criar conta a receber (AccountsReceivableService) para cada pagamento
+        ServiceOrder updatedOrder = this.repository.save(serviceOrder);
+        serviceOrder.getServiceOrderProducts().forEach(product -> this.inventoryService.subtractAmount(
+                product.getProduct().getId(),
+                product.getQuantity()
+        ));
+        return updatedOrder;
     }
 
     public ServiceOrder update(final ServiceOrder serviceOrder, final Long id) {
@@ -78,6 +93,20 @@ public class ServiceOrderService {
         return found;
     }
 
+    private void fetchProducts(final ServiceOrder serviceOrder) {
+        serviceOrder.getServiceOrderProducts().forEach(serviceOrderProduct -> {
+            final Product product = this.productService.findById(serviceOrderProduct.getProduct().getId());
+            serviceOrderProduct.setProduct(product);
+        });
+    }
+
+    private void fetchServices(final ServiceOrder serviceOrder) {
+        serviceOrder.getServiceOrderServices().forEach(serviceOrderProduct -> {
+            final com.softwarehouse.serviceorder.domain.Service service = this.serviceService.findById(serviceOrderProduct.getService().getId());
+            serviceOrderProduct.setService(service);
+        });
+    }
+
     private void validateInventory(final ServiceOrder serviceOrder) {
         serviceOrder.getServiceOrderProducts().forEach(serviceOrderProduct -> {
             final int requestedQuantity = serviceOrderProduct.getQuantity();
@@ -106,23 +135,25 @@ public class ServiceOrderService {
 
             final BigDecimal value = price.multiply(quantity);
 
-            final BigDecimal valueWithDiscount = Optional.of(serviceOrderProduct.getDiscountAmount())
+            final BigDecimal valueWithDiscount = Optional.of(serviceOrderProduct.getDiscountAmount()) // 0 ou nulo
                     .map(discountAmount -> {
-                        if (discountAmount.equals(BigDecimal.ZERO)) {
-                            return Optional.of(serviceOrderProduct.getDiscountPercent())
+                        if (discountAmount.setScale(0, RoundingMode.CEILING).equals(BigDecimal.ZERO)) {
+                            return Optional.of(serviceOrderProduct.getDiscountPercent()) // 0 ou nulo
                                     .map(value::multiply)
+                                    .map(v -> v.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                                     .orElse(BigDecimal.ZERO);
                         }
 
                         return discountAmount;
                     })
-                    .or(() -> Optional.of(serviceOrderProduct.getDiscountPercent())
+                    .or(() -> Optional.of(serviceOrderProduct.getDiscountPercent()) // 0 ou nulo
                             .map(value::multiply)
+                            .map(v -> v.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                             .or(() -> Optional.of(BigDecimal.ZERO)))
                     .map(value::subtract)
                     .orElse(BigDecimal.ZERO);
 
-            serviceOrderProduct.setTotalValue(valueWithDiscount);
+            serviceOrderProduct.setTotalValue(valueWithDiscount.setScale(2, RoundingMode.CEILING));
         });
     }
 
@@ -144,9 +175,10 @@ public class ServiceOrderService {
 
             final BigDecimal valueWithDiscount = Optional.of(serviceOrderService.getDiscountAmount())
                     .map(discountAmount -> {
-                        if (discountAmount.equals(BigDecimal.ZERO)) {
+                        if (discountAmount.setScale(0, RoundingMode.CEILING).equals(BigDecimal.ZERO)) {
                             return Optional.of(serviceOrderService.getDiscountPercent())
                                     .map(value::multiply)
+                                    .map(v -> v.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                                     .orElse(BigDecimal.ZERO);
                         }
 
@@ -154,16 +186,32 @@ public class ServiceOrderService {
                     })
                     .or(() -> Optional.of(serviceOrderService.getDiscountPercent())
                             .map(value::multiply)
+                            .map(v -> v.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                             .or(() -> Optional.of(BigDecimal.ZERO)))
                     .map(value::subtract)
                     .orElse(BigDecimal.ZERO);
 
-            serviceOrderService.setTotalValue(valueWithDiscount);
+            serviceOrderService.setTotalValue(valueWithDiscount.setScale(2, RoundingMode.CEILING));
         });
     }
 
     private void calculateServiceOrderServicesSubtotal(final ServiceOrder serviceOrder) {
         serviceOrder.getServiceOrderServices().forEach(this::calculateServiceOrderServiceSubtotal);
+    }
+
+    private void calculatePayments(final ServiceOrder serviceOrder) {
+        Optional.ofNullable(serviceOrder).ifPresent(so -> {
+            final int installments = Optional
+                    .ofNullable(so.getPayments())
+                    .map(List::size)
+                    .orElseThrow(() -> new BadRequestException("invalid installments size"));
+
+            final BigDecimal installmentValue = serviceOrder
+                    .getTotal()
+                    .divide(BigDecimal.valueOf(installments), RoundingMode.CEILING);
+
+            so.getPayments().forEach(payment -> payment.setValue(installmentValue));
+        });
     }
 
     private void calculateTotals(final ServiceOrder serviceOrder) {
@@ -186,9 +234,10 @@ public class ServiceOrderService {
 
         final BigDecimal totalValue = Optional.of(serviceOrder.getDiscountAmount())
                 .map(discountAmount -> {
-                    if (discountAmount.equals(BigDecimal.ZERO)) {
+                    if (discountAmount.setScale(0, RoundingMode.CEILING).equals(BigDecimal.ZERO)) {
                         return Optional.of(serviceOrder.getDiscountPercent())
                                 .map(totalCostValue::multiply)
+                                .map(value -> value.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                                 .orElse(BigDecimal.ZERO);
                     }
 
@@ -196,10 +245,13 @@ public class ServiceOrderService {
                 })
                 .or(() -> Optional.of(serviceOrder.getDiscountPercent())
                         .map(totalCostValue::multiply)
+                        .map(value -> value.divide(BigDecimal.valueOf(100.00), RoundingMode.CEILING))
                         .or(() -> Optional.of(BigDecimal.ZERO)))
                 .map(totalCostValue::subtract)
                 .orElse(BigDecimal.ZERO);
 
-        serviceOrder.setTotal(totalValue);
+        serviceOrder.setTotal(totalValue.setScale(2, RoundingMode.CEILING));
+
+        //this.calculatePayments(serviceOrder);
     }
 }
