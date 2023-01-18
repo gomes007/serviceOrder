@@ -26,8 +26,12 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "role_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false)
+            joinColumns = @JoinColumn(name = "user_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false)
     )
     private List<Role> roles;
+
+    public List<String> getStringRoles() {
+        return this.roles.stream().map(Role::getName).toList();
+    }
 }

@@ -2,13 +2,12 @@ package com.softwarehouse.serviceorder.security.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.softwarehouse.serviceorder.security.domain.Role;
-import com.softwarehouse.serviceorder.security.domain.User;
 import com.softwarehouse.serviceorder.security.service.JwtSignToken;
 import com.softwarehouse.serviceorder.security.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
@@ -58,17 +57,26 @@ public class JwtTokenFilter extends BasicAuthenticationFilter {
 
         this.userService.userExists(login);
 
-        final List<Role> roles = decoded.getClaim("roles").asList(Role.class);
+        final List<String> roles = decoded.getClaim("roles").asList(String.class);
 
         if (roles.isEmpty()) {
             chain.doFilter(request, response);
             return;
         }
 
-        final List<GrantedAuthority> authorities = roles
+        final List<SimpleGrantedAuthority> authorities = roles
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(SimpleGrantedAuthority::new)
                 .toList();
 
+        final UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken(
+                login,
+                null,
+                authorities
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(principal);
+
+        chain.doFilter(request, response);
     }
 }

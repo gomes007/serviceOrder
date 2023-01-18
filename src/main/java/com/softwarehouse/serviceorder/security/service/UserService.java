@@ -6,14 +6,21 @@ import com.softwarehouse.serviceorder.security.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(final UserRepository repository, final PasswordEncoder passwordEncoder) {
+    private final RoleService roleService;
+
+    public UserService(final UserRepository repository,
+                       final PasswordEncoder passwordEncoder,
+                       final RoleService roleService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     public User findUserByLogin(final String login) {
@@ -27,5 +34,18 @@ public class UserService {
     public void passwordMatches(final String rawPassword, final User loggingUser) {
         if (!this.passwordEncoder.matches(rawPassword, loggingUser.getPassword()))
             throw new UnauthorizedException("login or password not matches");
+    }
+
+    public void createDefaultUser() {
+        if (this.repository.count() <= 0) {
+            final User user = new User();
+
+            user.setLogin("admin");
+            user.setPassword(this.passwordEncoder.encode("admin"));
+            user.setRoles(List.of(this.roleService.getAdminRole()));
+            user.setExternalReference(-1L);
+
+            this.repository.save(user);
+        }
     }
 }

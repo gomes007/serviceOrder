@@ -17,7 +17,7 @@ public class TokenService {
         return JWT
                 .create()
                 .withClaim("login", user.getLogin())
-                .withClaim("roles", user.getRoles())
+                .withClaim("roles", user.getStringRoles())
                 .withExpiresAt(expiresAt)
                 .sign(JwtSignToken.ALGO);
     }
