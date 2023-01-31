@@ -1,6 +1,5 @@
 package com.softwarehouse.serviceorder.security.config;
 
-import com.softwarehouse.serviceorder.security.domain.User;
 import com.softwarehouse.serviceorder.security.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

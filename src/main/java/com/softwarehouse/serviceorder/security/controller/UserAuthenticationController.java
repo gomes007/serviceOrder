@@ -3,6 +3,7 @@ package com.softwarehouse.serviceorder.security.controller;
 import com.softwarehouse.serviceorder.security.model.UserAuthenticationRequest;
 import com.softwarehouse.serviceorder.security.model.UserAuthenticationResponse;
 import com.softwarehouse.serviceorder.security.service.AuthenticationService;
+import com.softwarehouse.serviceorder.security.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,15 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/users")
 public class UserAuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
-    public UserAuthenticationController(AuthenticationService authenticationService) {
+    public UserAuthenticationController(final AuthenticationService authenticationService,
+                                        final UserService userService) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @PostMapping("/authenticate")

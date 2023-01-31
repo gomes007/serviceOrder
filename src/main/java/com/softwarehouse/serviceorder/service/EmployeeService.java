@@ -1,9 +1,11 @@
 package com.softwarehouse.serviceorder.service;
 
 import com.softwarehouse.serviceorder.domain.Employee;
+import com.softwarehouse.serviceorder.exceptions.impl.ConflictRequestException;
 import com.softwarehouse.serviceorder.exceptions.impl.NotFoundException;
 import com.softwarehouse.serviceorder.model.Response;
 import com.softwarehouse.serviceorder.repository.EmployeeRepository;
+import com.softwarehouse.serviceorder.security.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -11,13 +13,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeService {
     private final EmployeeRepository repository;
+    private final UserService userService;
 
-    public EmployeeService(final EmployeeRepository repository) {
+    public EmployeeService(final EmployeeRepository repository, final UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
     public Employee save(final Employee employee) {
-        return this.repository.save(employee);
+        this.throwConflictIfEmployeeAlreadyExists(employee);
+
+        final Employee created = this.repository.save(employee);
+
+        this.userService.createSystemUser(created.getEmail(), created.getId());
+
+        return created;
     }
 
     public Response<Employee> find(final String filter, final String position, final String role, final PageRequest pageRequest) {
@@ -57,5 +67,11 @@ public class EmployeeService {
         this.repository.delete(found);
 
         return found;
+    }
+
+    public void throwConflictIfEmployeeAlreadyExists(final Employee employee) {
+        this.repository.findByEmail(employee.getEmail()).ifPresent(found -> {
+            throw new ConflictRequestException("employee already exists with email: %s".formatted(found.getEmail()));
+        });
     }
 }

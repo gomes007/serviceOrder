@@ -24,14 +24,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "user_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false)
-    )
-    private List<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private List<UserRoles> roles;
+
+    @Column(name = "first_access", nullable = false)
+    private boolean firstAccess = true;
 
     public List<String> getStringRoles() {
-        return this.roles.stream().map(Role::getName).toList();
+        return this.roles.stream().map(userRole -> userRole.getRole().getName()).toList();
     }
 }

@@ -31,7 +31,7 @@ public class AuthorizationConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity builder) throws Exception {
         return builder.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users/authenticate", "/user/authenticate", "/users/validate").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/authenticate", "/users/autoservice").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilter(new JwtTokenFilter(this.authenticationManager(), this.userService))
