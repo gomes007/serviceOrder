@@ -27,18 +27,22 @@ public class ServiceOrderService {
     private final ProductService productService;
     private final ServiceService serviceService;
 
+    private final AccountsReceivableService accountsReceivableService;
+
     public ServiceOrderService(
             final ServiceOrderRepository repository,
             final AttachmentService attachmentService,
             final InventoryService inventoryService,
             final ProductService productService,
-            final ServiceService serviceService
+            final ServiceService serviceService,
+            final AccountsReceivableService accountsReceivableService
     ) {
         this.repository = repository;
         this.attachmentService = attachmentService;
         this.inventoryService = inventoryService;
         this.productService = productService;
         this.serviceService = serviceService;
+        this.accountsReceivableService = accountsReceivableService;
     }
 
     public ServiceOrder open(final ServiceOrder serviceOrder) {
@@ -49,12 +53,17 @@ public class ServiceOrderService {
 
         serviceOrder.setStatus(ServiceOrderStatus.OPEN);
 
-        // TODO criar conta a receber (AccountsReceivableService) para cada pagamento
         ServiceOrder updatedOrder = this.repository.save(serviceOrder);
         serviceOrder.getServiceOrderProducts().forEach(product -> this.inventoryService.subtractAmount(
-                product.getProduct().getId(),
+                product.getProduct().getInventory().getId(),
                 product.getQuantity()
         ));
+
+        this.accountsReceivableService.registerAccount(AccountsReceivable
+                .builder()
+                        .
+                .build());
+
         return updatedOrder;
     }
 

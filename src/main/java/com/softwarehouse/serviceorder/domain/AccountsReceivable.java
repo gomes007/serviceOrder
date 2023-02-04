@@ -1,20 +1,24 @@
 package com.softwarehouse.serviceorder.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "accounts_receivable")
 public class AccountsReceivable extends Billing {
-    @OneToMany
-    @JoinColumn(name = "accounts_receivable_id", nullable = false)
-    private List<AccountPlan> accountPlans;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountsReceivable")
+    private List<BillingPlan> accountPlans;
 
     @OneToMany
-    @JoinColumn(name = "accounts_receivable_id", nullable = false)
+    @JoinColumn(name = "accounts_receivable_id")
     private List<Payment> payments;
 
     @OneToMany
