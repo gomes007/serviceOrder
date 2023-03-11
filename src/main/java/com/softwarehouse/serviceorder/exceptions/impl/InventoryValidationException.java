@@ -1,7 +1,7 @@
 package com.softwarehouse.serviceorder.exceptions.impl;
 
 import com.softwarehouse.serviceorder.exceptions.WebException;
-import com.softwarehouse.serviceorder.model.InventoryValidation;
+import com.softwarehouse.serviceorder.contexts.product.models.InventoryValidation;
 import org.springframework.http.HttpStatus;
 
 import java.util.Map;

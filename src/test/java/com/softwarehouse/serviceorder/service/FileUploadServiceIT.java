@@ -1,5 +1,6 @@
 package com.softwarehouse.serviceorder.service;
 
+import com.softwarehouse.serviceorder.contexts.shared.services.FileUploadService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

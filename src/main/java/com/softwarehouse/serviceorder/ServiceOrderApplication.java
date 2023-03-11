@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ServiceOrderApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ServiceOrderApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceOrderApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
-	}
+    }
 }
